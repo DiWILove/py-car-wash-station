@@ -30,14 +30,8 @@ class CarWashStation:
         total_income = 0.0
         for car in cars:
             if car.clean_mark < self.clean_power:
-                one_car_income = (
-                    car.comfort_class
-                    * (self.clean_power - car.clean_mark)
-                    * self.average_rating
-                    / self.distance_from_city_center
-                )
+                total_income += self.wash_single_car(car)
                 car.clean_mark = self.clean_power
-                total_income += one_car_income
         return round(total_income, 1)
 
     def wash_single_car(self, car: Car) -> float:
@@ -57,5 +51,6 @@ class CarWashStation:
     def rate_service(self, rate: float) -> float:
         total_rate = self.average_rating * self.count_of_ratings
         self.count_of_ratings += 1
-        self.average_rating = (total_rate + rate) / self.count_of_ratings
-        return round(self.average_rating, 1)
+        new_average = (total_rate + rate) / self.count_of_ratings
+        self.average_rating = round(new_average, 1)
+        return self.average_rating
